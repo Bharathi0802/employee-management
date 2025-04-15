@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Employee</title>
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <h2>Edit Employee</h2>
+    <form th:action="@{/update}" th:object="${employee}" method="post">
+        <input type="hidden" th:field="*{id}" />
+
+        <label>Name:</label>
+        <input type="text" th:field="*{name}" required /><br/>
+
+        <label>Email:</label>
+        <input type="email" th:field="*{email}" required /><br/>
+
+        <label>Department:</label>
+        <select id="department" th:field="*{department}" required>
+        <option value="Engineering" th:selected="${employee.department == 'Engineering'}">Engineering</option>
+        <option value="Marketing" th:selected="${employee.department == 'Marketing'}">Marketing</option>
+        <option value="HR" th:selected="${employee.department == 'HR'}">HR</option>
+        <option value="Production" th:selected="${employee.department == 'Production'}">Production</option>
+    </select></br>
+    
+    <label for="task">Task:</label>
+    <input type="text" id="task" name="task" th:value="${employee.task}" required><br>
+
+    <label for="dueDate">Due Date:</label>
+    <input type="date" id="dueDate" name="dueDate" th:value="${employee.dueDate}"><br>
+
+ 	<label for="status">Status:</label>
+		<select id="status" name="status" th:value="${employee.status}">
+    	<option value="Not Started">Not Started</option>
+    	<option value="In Progress">In Progress</option>
+    	<option value="Finished">Finished</option>
+	</select><br>
+    
+
+        <button type="submit">Update</button>
+    </form>
+
+    <br/>
+    <a th:href="@{/}">Back to Employee List</a>
+</body>
+</html>

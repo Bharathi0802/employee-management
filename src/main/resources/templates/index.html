@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Employee List</title>
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+</head>
+<body>
+
+<!-- Flash Message (success, error, etc.) -->
+<div th:if="${flashMessage != null}" class="alert" th:classappend="${flashMessage.type == 'success' ? 'alert-success' : 'alert-danger'}">
+    <span th:text="${flashMessage.message}"></span>
+</div>
+<h2>Employees List</h2>
+
+<!-- Search Form -->
+<form th:action="@{/search}" method="get">
+    <label for="department">Search by Department:</label>
+    <select name="department" id="department" th:disabled="${allEmployees.size() == 0}" required>
+        <option value="Engineering" th:selected="${department == 'Engineering'}">Engineering</option>
+        <option value="Marketing" th:selected="${department == 'Marketing'}">Marketing</option>
+        <option value="HR" th:selected="${department == 'HR'}">HR</option>
+        <option value="Production" th:selected="${department == 'Production'}">Production</option>
+    </select>
+    <button type="submit" th:disabled="${allEmployees.size() == 0}">Search</button>
+</form>
+
+<!-- If no employee at all -->
+<div th:if="${allEmployees.size() == 0}">
+    <p>No employees available to search</p>
+</div>
+
+<a th:href="@{/add}">Add New</a>
+
+<!-- If user searched -->
+<div th:if="${department != null}">
+    <a href="/">Back to Employee List</a>
+    <h3>Search Results for Department: <span th:text="${department}"></span></h3>
+
+    <!-- If no match found -->
+    <p th:if="${employees.size() == 0}">No employees found in this department.</p>
+</div>
+
+<!-- Show table only if there are employees to display -->
+<div th:if="${(department == null and allEmployees.size() > 0) or (department != null and employees.size() > 0)}">
+    <table>
+        <tr><th>Employee ID</th><th>Name</th><th>Email</th><th>Department</th><th>Task</th><th>Due Date</th><th>Status</th><th>Actions</th></tr>
+        <tr th:each="emp : ${department != null ? employees : allEmployees}">
+            <td th:text="${emp.employeeId}"></td>
+            <td th:text="${emp.name}"></td>
+            <td th:text="${emp.email}"></td>
+            <td th:text="${emp.department}"></td>
+            <td th:text="${emp.task}">Task</td>
+    		<td th:text="${emp.dueDate}">Due Date</td>
+			<td>
+    		<span th:text="${emp.status}" th:classappend="${emp.status == 'Finished' ? 'status-finished' : emp.status == 'In Progress' ? 'status-progress' : 'status-notstarted'}">
+    		</span>
+			</td>
+            <td>
+                <a th:href="@{/edit/{id}(id=${emp.id})}">Edit</a> |
+                <a href="#" th:attr="data-id=${emp.id}" onclick="confirmDelete(this)">Delete</a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script>
+    // Auto close flash messages after 3 seconds
+    setTimeout(function() {
+        var flashMessage = document.querySelector('.alert');
+        if (flashMessage) {
+            flashMessage.style.transition = 'opacity 1s';
+            flashMessage.style.opacity = '0';
+            setTimeout(function() {
+                flashMessage.style.display = 'none';
+            }, 1000); // Hide message after fade-out
+        }
+    }, 3000);
+</script>
+    
+<script>
+
+    function confirmDelete(element) {
+        const id = element.getAttribute('data-id');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won’t be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Proceed with the deletion
+                window.location.href = '/delete/' + id;
+            }
+        });
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+
+
+</html>
