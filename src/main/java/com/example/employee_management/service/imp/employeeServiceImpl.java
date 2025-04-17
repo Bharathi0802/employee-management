@@ -6,8 +6,9 @@ import com.example.employee_management.model.employee;
 import com.example.employee_management.repository.employeeRepository;
 import com.example.employee_management.service.employeeService;
 import org.springframework.stereotype.Service;
-import java.util.Random;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class employeeServiceImpl implements employeeService {
@@ -18,37 +19,49 @@ public class employeeServiceImpl implements employeeService {
         this.employeeRepository = employeeRepository;
     }
 
+    @Override
     public List<employee> getAllEmployees() {
         return employeeRepository.findAll();
     }
 
+    @Override
     public employee save(employee employee) {
-    	if (employee.getEmployeeId() == null || employee.getEmployeeId().isEmpty()) {
+        if (employee.getEmployeeId() == null || employee.getEmployeeId().isEmpty()) {
             String generatedEmployeeId = generateEmployeeId(employee.getDepartment());
-            employee.setEmployeeId(generatedEmployeeId);  // Set the employeeId
-            
+            employee.setEmployeeId(generatedEmployeeId);
             System.out.println("Generated Employee ID: " + employee.getEmployeeId());
-
         }
         return employeeRepository.save(employee);
     }
 
+    @Override
     public employee getById(Long id) {
         return employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Employee not found"));
     }
 
+    @Override
     public void deleteById(Long id) {
         employeeRepository.deleteById(id);
     }
-    
+
     @Override
-    public List<employee> findByDepartmentIgnoreCase(String department) {
-        return employeeRepository.findByDepartmentIgnoreCase(department);
+    public Page<employee> findByDepartmentIgnoreCase(String department, Pageable pageable) {
+        return employeeRepository.findByDepartmentIgnoreCase(department, pageable);
+    }
+
+    @Override
+    public Page<employee> getPaginatedEmployees(Pageable pageable) {
+        return employeeRepository.findAll(pageable);
+    }
+
+    @Override
+    public long getTaskStatusCount(String status) {
+        return employeeRepository.countByStatus(status);
     }
     
- // Method to generate employee ID
+    // Method to generate employee ID
     private String generateEmployeeId(String department) {
-    	String departmentCode = "";
+        String departmentCode = "";
         switch (department.toLowerCase()) {
             case "production":
                 departmentCode = "PRD";
@@ -63,14 +76,13 @@ public class employeeServiceImpl implements employeeService {
                 departmentCode = "ENG";
                 break;
             default:
-                departmentCode = "GEN"; // Generic code in case department is unknown
+                departmentCode = "GEN";
         }
 
-        // Generate a random number for uniqueness
-        int randomNumber = (int) (Math.random() * 1000);  // Random number between 0 and 999
+        int randomNumber = (int) (Math.random() * 1000);
         return departmentCode + randomNumber;
     }
-    
+
     private String getDepartmentCode(String department) {
         switch (department) {
             case "Production":
@@ -82,7 +94,7 @@ public class employeeServiceImpl implements employeeService {
             case "Engineering":
                 return "ENG";
             default:
-                return "UNK"; // Unknown department
+                return "UNK";
         }
     }
 }
