@@ -1,37 +1,13 @@
-# 👋 Hello! I'm Bharathi_Subiksha_S
+# 🧑‍💼 Employee Management System
 
-🎓 Aspiring Software Developer | Fresher | Java Backend Enthusiast  
-💻 Passionate about turning ideas into real-world applications  
+A Spring Boot + MySQL CRUD application for managing employee data and tasks.
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## Features
+- Add, edit, delete employees
+- Task and due date tracking
+- Status: Not Started, In Progress, Completed (color-coded)
+- Flash messages & delete confirmation
 
-## 🚀 Tech Stack
-- **Languages**: Java, JavaScript, SQL, PHP
-- **Frameworks**: Spring Boot, JPA, Bootstrap
-- **Tools**: Git, GitHub, XAMPP, PHPMailer
-- **Databases**: MySQL
-
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-### 🛠️ Projects
-- 🔧 [Employee Management System] (https://github.com/Bharathi0802/employee-management)  
-  A CRUD-based web app built with Spring Boot + MySQL. Includes task tracking with color-coded status updates.
-
-- 📸 [Photography Website] ()
-  Frontend + PHP backend with booking form, calendar (FullCalendar), contact form with PHPMailer, and admin dashboard.
-
-- 📘 [Java DSA practice] ()  
-  Daily solved problems from LeetCode/GFG categorized by topic.
-
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-### 🌱 Currently Learning
-- Data Structures and Algorithms in Java  
-- REST APIs & System Design  
-- Freelance Web Development
-
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-### 📫 Connect With Me
-- ✉️ Email: bharati.subiksha@gmail.com
-- 💼 LinkedIn: [www.linkedin.com/in/bharathi-subiksha-s]
+## Tech Stack
+- Java, Spring Boot, JPA, Thymeleaf, MySQL
+- Bootstrap, HTML/CSS
